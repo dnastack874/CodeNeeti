@@ -1,21 +1,9 @@
-/**
- * CodeNiti — Email Server
- * Sends contact form submissions to dnastack874@gmail.com
- *
- * SETUP:
- *   npm install
- *   node server.js
- *
- * The Gmail App Password is already configured below.
- * Make sure "Less secure app access" is OFF and you use an App Password.
- */
-
 const express = require('express');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // ── Middleware
 app.use(cors());
@@ -27,7 +15,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'dnastack874@gmail.com',
-        pass: 'zuhu zlfl xnsv cukk', // Gmail App Password
+        pass: process.env.EMAIL_PASS, // Gmail App Password
     },
 });
 
