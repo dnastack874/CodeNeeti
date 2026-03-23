@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management System | Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Deltha';
+            src: url('./fonts/Deltha.otf') format('opentype'), url('./fonts/Deltha.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --bg: #050505;
+            --surface: #0a0a0c;
+            --surface2: #111115;
+            --text: #ffffff;
+            --muted: #888890;
+            --muted2: #55555f;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.14);
+            --accent: #6eb6d3;
+            --accent-hover: #8acbea;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .nav-dna {
+            font-family: 'Deltha', 'Clash Display', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .back-btn {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover { color: var(--text); }
+
+        .app-container {
+            flex: 1;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .app-header {
+            margin-bottom: 3rem;
+            text-align: center;
+            animation: fadeUp 0.8s ease-out forwards;
+        }
+
+        .app-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(110, 182, 211, 0.1);
+            border: 1px solid rgba(110, 182, 211, 0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            margin-bottom: 1rem;
+        }
+
+        .app-title {
+            font-family: 'Deltha', 'Clash Display', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: normal;
+            background: linear-gradient(180deg, #ffffff 30%, #666 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .app-desc {
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dashboard-layout {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeUp 1s ease-out 0.2s forwards;
+            opacity: 0;
+            transform: translateY(30px);
+            display: flex;
+            min-height: 600px;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            border-right: 1px solid var(--border);
+            background: var(--surface2);
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-item.active {
+            background: rgba(110, 182, 211, 0.1);
+            color: var(--accent);
+            border-left: 3px solid var(--accent);
+        }
+
+        .nav-item:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        /* Custom scrollbar */
+        .main-content::-webkit-scrollbar { width: 6px; }
+        .main-content::-webkit-scrollbar-track { background: transparent; }
+        .main-content::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .class-selector {
+            background: var(--surface2);
+            border: 1px solid var(--border-light);
+            color: var(--text);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            border-top: 3px solid transparent;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-card:nth-child(1) { border-top-color: #3498db; }
+        .stat-card:nth-child(2) { border-top-color: #2ecc71; }
+        .stat-card:nth-child(3) { border-top-color: #9b59b6; }
+        .stat-card:nth-child(4) { border-top-color: #e74c3c; }
+        
+        .stat-label {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            font-family: 'Deltha', sans-serif;
+        }
+
+        .grid-area {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .panel {
+            background: var(--surface2);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: rgba(110, 182, 211, 0.1);
+        }
+
+        /* Attendance List */
+        .attendance-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .attendance-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.02);
+            transition: background 0.2s;
+        }
+        
+        .attendance-row:hover { background: rgba(255,255,255,0.04); }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .attendance-toggle {
+            display: flex;
+            gap: 5px;
+        }
+
+        .toggle-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.present.active { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border-color: #2ecc71; }
+        .toggle-btn.absent.active { background: rgba(231, 76, 60, 0.15); color: #e74c3c; border-color: #e74c3c; }
+
+        .schedule-item {
+            padding: 1rem;
+            border-left: 2px solid var(--accent);
+            background: rgba(255,255,255,0.02);
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .schedule-time {
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--surface2);
+            border: 1px solid var(--accent);
+            color: var(--text);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @media(max-width: 900px) {
+            .dashboard-layout { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; overflow-x: auto; padding: 1rem; }
+            .nav-item { white-space: nowrap; margin-bottom: 0; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid-area { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="nav-brand">
+            <span class="nav-dna">DNA</span>
+        </a>
+        <a href="index.html" class="back-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M10 12L4 8l6-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Back to Projects
+        </a>
+    </nav>
+
+    <div class="app-container">
+        <div class="app-header">
+            <div class="app-tag">Live Environment</div>
+            <h1 class="app-title">School Management System</h1>
+            <p class="app-desc">A centralized portal for educators and administration to track attendance, monitor student progress, and schedule daily curriculum assignments.</p>
+        </div>
+
+        <div class="dashboard-layout">
+            <div class="sidebar">
+                <div class="nav-item active">Dashboard</div>
+                <div class="nav-item">Academics</div>
+                <div class="nav-item">Attendance</div>
+                <div class="nav-item">Examinations</div>
+                <div class="nav-item">Communications</div>
+            </div>
+
+            <div class="main-content">
+                <div class="topbar">
+                    <h2>Overview Dashboard</h2>
+                    <select class="class-selector" onchange="changeClass(this.value)">
+                        <option value="10A">Grade 10 - Section A</option>
+                        <option value="10B">Grade 10 - Section B</option>
+                        <option value="11Sci">Grade 11 - Science</option>
+                    </select>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Students</div>
+                        <div class="stat-value" id="stat-students">45</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Attendance Today</div>
+                        <div class="stat-value" id="stat-att">93%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Assignments Due</div>
+                        <div class="stat-value">2</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Notices</div>
+                        <div class="stat-value">1</div>
+                    </div>
+                </div>
+
+                <div class="grid-area">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div>
+                                <h3 style="margin-bottom: 4px;">Record Attendance</h3>
+                                <span style="font-size: 0.8rem; color: var(--muted);"><span id="present-count">3</span> Present / 4 Total</span>
+                            </div>
+                            <button class="btn-outline" onclick="showToast('Attendance records saved successfully!')">Save Records</button>
+                        </div>
+                        
+                        <div class="attendance-list">
+                            <!-- Students -->
+                            <div class="attendance-row">
+                                <div class="student-info">
+                                    <div class="avatar" style="background: rgba(52, 152, 219, 0.2); color: #3498db;">AA</div>
+                                    <span style="font-weight: 500;">Aarav Agarwal</span>
+                                </div>
+                                <div class="attendance-toggle">
+                                    <button class="toggle-btn present active" onclick="toggleAtt(this, 'present')">P</button>
+                                    <button class="toggle-btn absent" onclick="toggleAtt(this, 'absent')">A</button>
+                                </div>
+                            </div>
+                            <div class="attendance-row">
+                                <div class="student-info">
+                                    <div class="avatar" style="background: rgba(155, 89, 182, 0.2); color: #9b59b6;">IM</div>
+                                    <span style="font-weight: 500;">Isha Mehta</span>
+                                </div>
+                                <div class="attendance-toggle">
+                                    <button class="toggle-btn present active" onclick="toggleAtt(this, 'present')">P</button>
+                                    <button class="toggle-btn absent" onclick="toggleAtt(this, 'absent')">A</button>
+                                </div>
+                            </div>
+                            <div class="attendance-row">
+                                <div class="student-info">
+                                    <div class="avatar" style="background: rgba(231, 76, 60, 0.2); color: #e74c3c;">KS</div>
+                                    <span style="font-weight: 500;">Kabir Singh</span>
+                                </div>
+                                <div class="attendance-toggle">
+                                    <button class="toggle-btn present" onclick="toggleAtt(this, 'present')">P</button>
+                                    <button class="toggle-btn absent active" onclick="toggleAtt(this, 'absent')">A</button>
+                                </div>
+                            </div>
+                            <div class="attendance-row">
+                                <div class="student-info">
+                                    <div class="avatar" style="background: rgba(46, 204, 113, 0.2); color: #2ecc71;">PK</div>
+                                    <span style="font-weight: 500;">Priya Kapoor</span>
+                                </div>
+                                <div class="attendance-toggle">
+                                    <button class="toggle-btn present active" onclick="toggleAtt(this, 'present')">P</button>
+                                    <button class="toggle-btn absent" onclick="toggleAtt(this, 'absent')">A</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>Schedule</h3>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">09:00 AM - 09:45 AM</div>
+                            <div style="font-weight: 600;">Advanced Mathematics</div>
+                            <div style="font-size: 0.8rem; color: var(--muted); margin-top: 4px;">Room 302</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">10:00 AM - 10:45 AM</div>
+                            <div style="font-weight: 600;">Physics Lab</div>
+                            <div style="font-size: 0.8rem; color: var(--muted); margin-top: 4px;">Lab 2</div>
+                        </div>
+                        <div class="schedule-item" style="border-left-color: var(--muted);">
+                            <div class="schedule-time">11:00 AM - 11:30 AM</div>
+                            <div style="color: var(--muted);">Recess Break</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toastMsg">Action successful!</div>
+
+    <script>
+        function toggleAtt(btn, type) {
+            const row = btn.parentElement;
+            const presentBtn = row.querySelector('.present');
+            const absentBtn = row.querySelector('.absent');
+            
+            if (type === 'present') {
+                presentBtn.classList.add('active');
+                absentBtn.classList.remove('active');
+            } else {
+                presentBtn.classList.remove('active');
+                absentBtn.classList.add('active');
+            }
+            updateCounters();
+        }
+
+        function updateCounters() {
+            const list = document.querySelector('.attendance-list');
+            const total = list.querySelectorAll('.attendance-row').length;
+            const present = list.querySelectorAll('.present.active').length;
+            
+            document.getElementById('present-count').textContent = present;
+            document.getElementById('stat-att').textContent = Math.round((present/total) * 100) + '%';
+        }
+
+        function changeClass(val) {
+            showToast('Loading data for ' + val + '...');
+            if (val === '10B') {
+                document.getElementById('stat-students').textContent = '42';
+            } else if (val === '11Sci') {
+                document.getElementById('stat-students').textContent = '38';
+            } else {
+                document.getElementById('stat-students').textContent = '45';
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastMsg');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

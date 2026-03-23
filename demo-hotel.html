@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management Platform | Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Deltha';
+            src: url('./fonts/Deltha.otf') format('opentype'), url('./fonts/Deltha.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --bg: #050505;
+            --surface: #0a0a0c;
+            --surface2: #111115;
+            --text: #ffffff;
+            --muted: #888890;
+            --muted2: #55555f;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.14);
+            --accent: #c0a060;
+            --accent-hover: #e0c080;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .nav-dna {
+            font-family: 'Deltha', 'Clash Display', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .back-btn {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            color: var(--text);
+        }
+
+        .demo-container {
+            flex: 1;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .demo-header {
+            margin-bottom: 3rem;
+            text-align: center;
+            animation: fadeUp 0.8s ease-out forwards;
+        }
+
+        .demo-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(192, 160, 96, 0.1);
+            border: 1px solid rgba(192, 160, 96, 0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            margin-bottom: 1rem;
+        }
+
+        .demo-title {
+            font-family: 'Deltha', 'Clash Display', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: normal;
+            background: linear-gradient(180deg, #ffffff 30%, #666 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .demo-desc {
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .mock-dashboard {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeUp 1s ease-out 0.2s forwards;
+            opacity: 0;
+            transform: translateY(30px);
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            height: 600px;
+        }
+
+        .mock-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            border-right: 1px solid var(--border);
+            padding-right: 2rem;
+        }
+
+        .mock-nav-item {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mock-nav-item svg {
+            width: 18px;
+            height: 18px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .mock-nav-item.active {
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border-light);
+        }
+
+        .mock-nav-item.active svg {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .mock-nav-item:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
+        }
+
+        .mock-content-area {
+            position: relative;
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+        
+        /* Custom scrollbar */
+        .mock-content-area::-webkit-scrollbar { width: 6px; }
+        .mock-content-area::-webkit-scrollbar-track { background: transparent; }
+        .mock-content-area::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
+
+        .tab-panel {
+            display: none;
+            flex-direction: column;
+            gap: 2rem;
+            animation: fadeUp 0.4s ease forwards;
+        }
+
+        .tab-panel.active {
+            display: flex;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .mock-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--surface2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-light);
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            font-family: 'Deltha', sans-serif;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .stat-trend {
+            font-size: 0.75rem;
+            font-family: 'Inter', sans-serif;
+            color: #2ecc71;
+        }
+
+        .mock-table-area {
+            background: var(--surface2);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+
+        .mock-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 100px 80px;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.9rem;
+            align-items: center;
+        }
+        
+        .mock-row:last-child {
+            border-bottom: none;
+        }
+
+        .mock-row.header {
+            color: var(--muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding-top: 0;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .status-booked { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
+        .status-cleaning { background: rgba(241, 196, 15, 0.15); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3); }
+        .status-pending { background: rgba(230, 126, 34, 0.15); color: #e67e22; border: 1px solid rgba(230, 126, 34, 0.3); }
+
+        .action-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .action-link:hover { text-decoration: underline; }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            width: 400px;
+            max-width: 90%;
+            padding: 2rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        .modal-overlay.active { display: flex; }
+        .modal-overlay.active .modal { transform: scale(1); opacity: 1; }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media(max-width: 900px) {
+            .mock-dashboard { grid-template-columns: 1fr; height: auto; }
+            .mock-sidebar { border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; padding-bottom: 1.5rem; flex-direction: row; overflow-x: auto; }
+            .mock-nav-item { white-space: nowrap; }
+            .mock-stats { grid-template-columns: 1fr; }
+            .mock-row { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+            .mock-row > div:nth-child(n+3) { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="nav-brand">
+            <span class="nav-dna">DNA</span>
+        </a>
+        <a href="index.html" class="back-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M10 12L4 8l6-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Back to Projects
+        </a>
+    </nav>
+
+    <div class="demo-container">
+        <div class="demo-header">
+            <div class="demo-tag">Live Environment</div>
+            <h1 class="demo-title">Hotel Management Platform</h1>
+            <p class="demo-desc">A premium administrative interface for managing room inventory, tracking active bookings, and coordinating housekeeping operations seamlessly.</p>
+        </div>
+
+        <div class="mock-dashboard">
+            <div class="mock-sidebar">
+                <div class="mock-nav-item active" data-target="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Dashboard
+                </div>
+                <div class="mock-nav-item" data-target="rooms">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    Room Inventory
+                </div>
+                <div class="mock-nav-item" data-target="frontdesk">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    Front Desk
+                </div>
+            </div>
+
+            <div class="mock-content-area">
+                <!-- Dashboard Tab -->
+                <div class="tab-panel active" id="panel-dashboard">
+                    <div class="panel-header">
+                        <h2>Overview</h2>
+                        <button class="btn-primary" onclick="openModal()">+ New Booking</button>
+                    </div>
+
+                    <div class="mock-stats">
+                        <div class="stat-card">
+                            <div class="stat-label">Available Rooms</div>
+                            <div class="stat-value">24 <span class="stat-trend">↑ 2</span></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Today's Check-ins</div>
+                            <div class="stat-value">12</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Occupancy Rate</div>
+                            <div class="stat-value">82% <span class="stat-trend" style="color: #e67e22;">~</span></div>
+                        </div>
+                    </div>
+
+                    <div class="mock-table-area">
+                        <h3 style="margin-bottom: 1rem;">Recent Transactions</h3>
+                        <div class="mock-row header">
+                            <div>Guest Name</div>
+                            <div>Room Type</div>
+                            <div>Check-out</div>
+                            <div>Status</div>
+                            <div>Action</div>
+                        </div>
+                        <div id="booking-list">
+                            <div class="mock-row">
+                                <div>Sarah Jenkins</div>
+                                <div>Deluxe Suite (302)</div>
+                                <div>Oct 24, 2026</div>
+                                <div><span class="status-badge status-booked">Active</span></div>
+                                <div><a class="action-link" onclick="alert('View details for Sarah Jenkins')">View</a></div>
+                            </div>
+                            <div class="mock-row">
+                                <div>Michael Chen</div>
+                                <div>Standard Double (114)</div>
+                                <div>Oct 23, 2026</div>
+                                <div><span class="status-badge status-cleaning">Cleaning</span></div>
+                                <div><a class="action-link" onclick="alert('Trigger cleaning complete')">Checkout</a></div>
+                            </div>
+                            <div class="mock-row">
+                                <div>Emma Thompson</div>
+                                <div>Ocean View King (405)</div>
+                                <div>Oct 26, 2026</div>
+                                <div><span class="status-badge status-booked">Active</span></div>
+                                <div><a class="action-link">View</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rooms Tab -->
+                <div class="tab-panel" id="panel-rooms">
+                    <div class="panel-header">
+                        <h2>Room Inventory</h2>
+                        <div>
+                            <select style="background: var(--surface2); color: var(--text); padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px;">
+                                <option>All Floors</option>
+                                <option>Floor 1</option>
+                                <option>Floor 2</option>
+                                <option>Penthouse</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem;">
+                        <!-- Room Cards -->
+                        <div class="stat-card" style="text-align: center; border-color: #2ecc71;">
+                            <h3 style="margin-bottom: 0.5rem;">101</h3>
+                            <div class="stat-label">Standard</div>
+                            <span class="status-badge status-booked" style="background: transparent;">Available</span>
+                        </div>
+                        <div class="stat-card" style="text-align: center;">
+                            <h3 style="margin-bottom: 0.5rem;">102</h3>
+                            <div class="stat-label">Deluxe</div>
+                            <span class="status-badge status-pending" style="background: transparent;">Occupied</span>
+                        </div>
+                        <div class="stat-card" style="text-align: center; border-color: #f1c40f;">
+                            <h3 style="margin-bottom: 0.5rem;">103</h3>
+                            <div class="stat-label">Suite</div>
+                            <span class="status-badge status-cleaning" style="background: transparent;">Cleaning</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FrontDesk Tab -->
+                <div class="tab-panel" id="panel-frontdesk">
+                    <div class="panel-header">
+                        <h2>Front Desk Queue</h2>
+                    </div>
+                    <div class="mock-table-area">
+                        <p style="color: var(--muted); text-align: center; padding: 2rem;">No guests waiting in queue right now.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal">
+            <h2 style="margin-bottom: 1.5rem;">Create Booking</h2>
+            <div class="form-group">
+                <label>Guest Name</label>
+                <input type="text" id="guestName" placeholder="e.g. John Doe">
+            </div>
+            <div class="form-group">
+                <label>Room Priority</label>
+                <select id="roomType">
+                    <option>Standard Double</option>
+                    <option>Deluxe Suite</option>
+                    <option>Ocean View King</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn-primary" onclick="addBooking()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab functionality
+        const navItems = document.querySelectorAll('.mock-nav-item');
+        const panels = document.querySelectorAll('.tab-panel');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(n => n.classList.remove('active'));
+                panels.forEach(p => p.classList.remove('active'));
+                
+                item.classList.add('active');
+                const targetId = 'panel-' + item.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('bookingModal');
+        
+        function openModal() {
+            modal.classList.add('active');
+            document.getElementById('guestName').value = '';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        function addBooking() {
+            const name = document.getElementById('guestName').value || 'Unknown Guest';
+            const room = document.getElementById('roomType').value;
+            
+            const list = document.getElementById('booking-list');
+            const newRow = document.createElement('div');
+            newRow.className = 'mock-row';
+            newRow.style.animation = 'fadeUp 0.4s ease forwards';
+            
+            newRow.innerHTML = `
+                <div>${name}</div>
+                <div>${room}</div>
+                <div>Pending...</div>
+                <div><span class="status-badge status-pending">Just Added</span></div>
+                <div><a class="action-link" onclick="this.parentElement.parentElement.remove()">Cancel</a></div>
+            `;
+            
+            list.insertBefore(newRow, list.firstChild);
+            closeModal();
+            
+            // Increment logic for effect
+            const valEl = document.querySelector('.stat-card:nth-child(2) .stat-value');
+            let val = parseInt(valEl.textContent);
+            valEl.innerHTML = (val + 1);
+        }
+    </script>
+</body>
+</html>
