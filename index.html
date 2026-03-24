@@ -774,235 +774,109 @@
 
         /* CONTACT */
         .contact-section {
-            max-width: min(1380px, 92vw);
-            margin: 0 auto;
-            padding: 8rem 1.5rem;
-        }
-
-        .contact-header {
-            margin-bottom: 4rem;
-        }
-
-        .contact-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 5rem;
-            align-items: start;
-        }
-
-        .contact-info p {
-            font-size: 1.05rem;
-            color: var(--muted);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .contact-detail {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--muted);
-            font-size: 0.95rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .glass-form-wrap {
             position: relative;
-            border-radius: 20px;
-            padding: 2.5rem;
-            background: rgba(255, 255, 255, 0.025);
-            backdrop-filter: blur(24px) saturate(1.2);
-            -webkit-backdrop-filter: blur(24px) saturate(1.2);
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04) inset, 0 30px 80px rgba(0, 0, 0, 0.5);
-        }
-
-        .glass-form-wrap::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 5%, rgba(255, 255, 255, 0.18) 50%, transparent 95%);
-            border-radius: 20px 20px 0 0;
-        }
-
-        .glass-form-wrap::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            background: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .skeleton-form {
+            padding: 10rem 2rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-        }
-
-        .skeleton-line {
-            height: 52px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.09) 50%, rgba(255, 255, 255, 0.04) 75%);
-            background-size: 400% 100%;
-            animation: skeleton-shimmer 1.8s ease-in-out infinite;
-            border-radius: 10px;
-        }
-
-        .skeleton-line.short {
-            height: 28px;
-            width: 55%;
-        }
-
-        .skeleton-line.textarea {
-            height: 120px;
-        }
-
-        .skeleton-line.btn {
-            width: 38%;
-        }
-
-        @keyframes skeleton-shimmer {
-            0% {
-                background-position: 100% 0
-            }
-
-            100% {
-                background-position: -100% 0
-            }
-        }
-
-        .contact-form {
-            display: none;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .contact-form.ready {
-            display: flex;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .form-label {
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--muted2);
-        }
-
-        .form-input,
-        .form-textarea {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 0.9rem 1.1rem;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
-            outline: none;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .form-input::placeholder,
-        .form-textarea::placeholder {
-            color: var(--muted2);
-        }
-
-        .form-input:focus,
-        .form-textarea:focus {
-            border-color: rgba(255, 255, 255, 0.25);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 130px;
-            line-height: 1.65;
-        }
-
-        .submit-btn {
-            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #000;
-            background: #fff;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 0.5rem;
-            position: relative;
+            text-align: center;
             overflow: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .submit-btn::before {
-            content: '';
+        .contact-glow-bg {
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-            transition: left 0.5s ease;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 60%);
+            pointer-events: none;
+            border-radius: 50%;
         }
 
-        .submit-btn:hover::before {
-            left: 100%;
+        .contact-big-heading {
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            font-family: 'Deltha', sans-serif;
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.15);
+        .contact-big-heading span {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
         }
 
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .contact-sub-text {
+            max-width: 500px;
+            font-size: 1.1rem;
+            color: var(--muted);
+            margin-bottom: 4rem;
+            line-height: 1.7;
         }
 
-        .form-status {
-            display: none;
-            padding: 1rem 1.25rem;
-            border-radius: 10px;
-            font-size: 1rem;
+        .direct-email-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem 3.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.15rem;
             font-weight: 500;
-            margin-top: 0.5rem;
-            line-height: 1.5;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .direct-email-btn:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
         }
 
-        .form-status.success {
-            display: block;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            color: var(--text);
+        .direct-email-btn svg {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .direct-email-btn:hover svg {
+            transform: translate(6px, -6px);
+            color: #fff;
         }
 
-        .form-status.error {
-            display: block;
-            background: rgba(255, 100, 100, 0.06);
-            border: 1px solid rgba(255, 100, 100, 0.2);
-            color: #ff9898;
+        .btn-glow {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            mix-blend-mode: screen;
+            z-index: 0;
+        }
+
+        .direct-email-btn:hover .btn-glow {
+            opacity: 1;
+        }
+
+        .direct-email-btn .btn-text,
+        .direct-email-btn svg {
+            position: relative;
+            z-index: 1;
         }
 
         /* FOOTER */
@@ -1148,18 +1022,13 @@
                 grid-template-columns: 1fr
             }
 
-            .contact-wrapper {
-                grid-template-columns: 1fr;
-                gap: 2.5rem
-            }
-
             .footer-inner {
                 grid-template-columns: 1fr;
                 gap: 2.5rem
             }
 
-            .form-row {
-                grid-template-columns: 1fr
+            .contact-big-heading {
+                font-size: clamp(2.5rem, 10vw, 4rem);
             }
         }
     </style>
@@ -1428,64 +1297,26 @@
 
     <!-- CONTACT -->
     <div class="contact-section" id="contact">
-        <div class="contact-header reveal">
-            <p class="section-label">Get In Touch</p>
-            <h2 class="section-title">Let's get you what you need !</h2>
-        </div>
-        <div class="contact-wrapper">
-            <div class="contact-info reveal">
-                <p>A Chance waited is a chance wasted. Drop your details and let's get you what you need !</p>
-                <div class="contact-detail">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <path d="M2 4l6 5 6-5M2 4h12v8a1 1 0 01-1 1H3a1 1 0 01-1-1V4z" stroke="#888" stroke-width="1.2"
-                            stroke-linecap="round" />
-                    </svg>
-                    dnastack874@gmail.com
-                </div>
-            </div>
-            <div class="glass-form-wrap reveal" id="form-wrap">
-                <div class="skeleton-form" id="form-skeleton">
-                    <div class="skeleton-line short"></div>
-                    <div class="skeleton-line"></div>
-                    <div class="skeleton-line"></div>
-                    <div class="skeleton-line"></div>
-                    <div class="skeleton-line textarea"></div>
-                    <div class="skeleton-line btn"></div>
-                </div>
-                <form class="contact-form" id="contact-form" novalidate>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label" for="name">Name</label>
-                            <input class="form-input" id="name" name="name" type="text" placeholder="Your name" required
-                                autocomplete="name">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="email">Email</label>
-                            <input class="form-input" id="email" name="email" type="email" placeholder="your@email.com"
-                                required autocomplete="email">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="subject">Subject</label>
-                        <input class="form-input" id="subject" name="subject" type="text"
-                            placeholder="What is this about?" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="message">Message</label>
-                        <textarea class="form-textarea" id="message" name="message"
-                            placeholder="Tell us about your project or idea..." required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn" id="submit-btn">
-                        <span id="btn-label">Send Message</span>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M3 8h10M9 4l4 4-4 4" stroke="#000" stroke-width="1.5" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <div class="form-status" id="form-status"></div>
-                </form>
-            </div>
-        </div>
+        <div class="contact-glow-bg reveal"></div>
+        
+        <p class="section-label reveal" style="margin-bottom: 1.5rem;">Ready for the Next Step?</p>
+        
+        <h2 class="contact-big-heading reveal">
+            Let's Build<br>Something <span>Iconic</span>
+        </h2>
+        
+        <p class="contact-sub-text reveal">
+            We don't just write code. We engineer intelligent digital ecosystems. Skip the forms—reach out directly to start a conversation.
+        </p>
+
+        <a href="mailto:dnastack874@gmail.com" class="direct-email-btn reveal">
+            <span class="btn-text">dnastack874@gmail.com</span>
+            <div class="btn-glow"></div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+        </a>
     </div>
 
     <!-- FOOTER -->
@@ -1557,55 +1388,18 @@
             });
         });
 
-        // SKELETON → FORM
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const skeleton = document.getElementById('form-skeleton');
-                const form = document.getElementById('contact-form');
-                skeleton.style.transition = 'opacity 0.45s ease';
-                skeleton.style.opacity = '0';
-                setTimeout(() => { skeleton.style.display = 'none'; form.classList.add('ready'); }, 450);
-            }, 1200);
-        });
-
-        // CONTACT FORM
-        const contactForm = document.getElementById('contact-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const btnLabel = document.getElementById('btn-label');
-        const formStatus = document.getElementById('form-status');
-
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const subject = document.getElementById('subject').value.trim();
-            const message = document.getElementById('message').value.trim();
-            if (!name || !email || !subject || !message) return;
-
-            submitBtn.disabled = true;
-            btnLabel.textContent = 'Sending...';
-            formStatus.className = 'form-status';
-            formStatus.style.display = 'none';
-
-            try {
-                const res = await fetch('/send-email', {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, subject, message })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    formStatus.className = 'form-status success';
-                    formStatus.textContent = "Thank you for contacting us, we\u2019ll reach you in just a blink \u2728";
-                    contactForm.reset();
-                } else { throw new Error(); }
-            } catch {
-                formStatus.className = 'form-status error';
-                formStatus.textContent = "Oops! Our carrier pigeon got a little lost. Could you try again in just a moment? \uD83D\uDC26";
-            }
-            formStatus.style.display = 'block';
-            submitBtn.disabled = false;
-            btnLabel.textContent = 'Send Message';
-        });
+        // MAGNETIC EMAIL BUTTON GLOW
+        const emailBtn = document.querySelector('.direct-email-btn');
+        if (emailBtn) {
+            const glow = emailBtn.querySelector('.btn-glow');
+            emailBtn.addEventListener('mousemove', (e) => {
+                const rect = emailBtn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                glow.style.left = `${x - 75}px`;
+                glow.style.top = `${y - 75}px`;
+            });
+        }
     </script>
 </body>
 
