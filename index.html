@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -20,14 +20,27 @@
             background: #0a0a0a;
             opacity: 1;
             transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
         }
         #preloader.fade-out { opacity: 0; pointer-events: none; }
 
-        /* Element 1: Portfolio label */
+        /* Warm radial glow behind center */
+        .preloader-glow {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px; height: 350px;
+            background: radial-gradient(ellipse, rgba(200, 168, 96, 0.18) 0%, rgba(200, 168, 96, 0.06) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(20px);
+        }
+
+        /* Element 1: Brand label */
         .preloader-label {
             position: absolute; top: 2rem; left: 2rem;
-            font-size: 0.75rem; color: #888888; text-transform: uppercase;
-            letter-spacing: 0.3em;
+            font-size: 0.7rem; color: rgba(200, 180, 130, 0.5); text-transform: uppercase;
+            letter-spacing: 0.35em;
             opacity: 0; transform: translateY(-20px);
             animation: preloaderSlideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
         }
@@ -39,8 +52,9 @@
         }
         .preloader-word {
             position: absolute;
-            font-size: clamp(2.25rem, 6vw, 4.5rem);
-            color: rgba(245, 245, 245, 0.8);
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            color: #c8a860;
+            text-shadow: 0 0 40px rgba(200, 168, 96, 0.4), 0 0 80px rgba(200, 168, 96, 0.15);
             opacity: 0; transform: translateY(20px);
             animation: preloaderWordIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
@@ -49,14 +63,23 @@
         }
 
         /* Element 3: Counter */
-        .preloader-counter {
+        .preloader-counter-wrap {
             position: absolute; bottom: 2rem; right: 2rem;
-            font-size: clamp(3.75rem, 10vw, 8rem);
-            color: #f5f5f5;
-            font-variant-numeric: tabular-nums;
-            line-height: 1;
+            display: flex; align-items: flex-end; gap: 0.4rem;
             opacity: 0; transform: translateY(20px);
             animation: preloaderSlideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+        }
+        .preloader-counter {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: rgba(245, 245, 245, 0.85);
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+        }
+        .preloader-sparkle {
+            width: 18px; height: 18px;
+            margin-bottom: 0.3rem;
+            color: rgba(245, 245, 245, 0.6);
+            animation: sparklePulse 1.5s ease-in-out infinite;
         }
 
         /* Element 4: Progress bar */
@@ -68,8 +91,8 @@
             height: 100%; width: 100%;
             transform-origin: left;
             transform: scaleX(0);
-            background: linear-gradient(90deg, #89AACC 0%, #4E85BF 100%);
-            box-shadow: 0 0 8px rgba(137, 170, 204, 0.35);
+            background: linear-gradient(90deg, #a08040 0%, #d4b978 50%, #c8a860 100%);
+            box-shadow: 0 0 10px rgba(200, 168, 96, 0.4);
             transition: transform 0.1s linear;
         }
 
@@ -86,6 +109,10 @@
         @keyframes preloaderWordOut {
             to { opacity: 0; transform: translateY(-20px); }
         }
+        @keyframes sparklePulse {
+            0%, 100% { opacity: 0.5; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
 
         /* Main content hidden until preloader done */
         #main-content {
@@ -96,8 +123,8 @@
 
         /* Responsive preloader */
         @media (min-width: 768px) {
-            .preloader-label { top: 3rem; left: 3rem; font-size: 0.875rem; }
-            .preloader-counter { bottom: 3rem; right: 3rem; }
+            .preloader-label { top: 3rem; left: 3rem; font-size: 0.8rem; }
+            .preloader-counter-wrap { bottom: 3rem; right: 3rem; }
         }
         @font-face {
             font-family: 'Deltha';
@@ -1125,9 +1152,12 @@
 
     <!-- PRELOADER -->
     <div id="preloader">
+        <div class="preloader-glow"></div>
         <div class="preloader-label">CODENEETI</div>
         <div class="preloader-words" id="preloader-words"></div>
-        <div class="preloader-counter font-display" id="preloader-counter">000</div>
+        <div class="preloader-counter-wrap">
+            <span class="preloader-counter font-display" id="preloader-counter">000</span>
+        </div>
         <div class="preloader-track">
             <div class="preloader-fill" id="preloader-fill"></div>
         </div>
@@ -1264,7 +1294,7 @@
                                     stroke-linecap="round" />
                             </svg></div>
                     </div>
-                    <div class="project-card premium reveal" onclick="window.open('flowsy.online', '_blank')" style="cursor: pointer;">
+                    <div class="project-card premium reveal" onclick="window.open('https://flowsy.online', '_blank')" style="cursor: pointer;">
                         <div class="project-tag premium-tag">Premium Project</div>
                         <h3 class="project-name">StudyFlow - Personal Planner</h3>
                         <p class="project-desc">StudyFlow is a student productivity app for managing tasks, planning time slots, and staying focused. It includes a focus timer, progress tracking, and a clean interface to build discipline.</p>
@@ -1276,7 +1306,7 @@
                 </div>
             </div>
 
-            <!-- ABOUT US -->
+            <!-- ABOUT US -->wher
             <div class="about-section" id="about">
                 <div class="about-header reveal">
                     <p class="section-label">The Team</p>
@@ -1475,30 +1505,30 @@
             // Show first word immediately
             showWord(0);
 
-            // Cycle words every 900ms, stop at last
+            // Cycle words every 1300ms, stop at last
             const wordInterval = setInterval(() => {
                 wordIndex++;
                 if (wordIndex >= words.length) { clearInterval(wordInterval); return; }
                 showWord(wordIndex);
-            }, 900);
+            }, 1300);
 
-            // Counter: 000 → 100 over 2700ms via rAF
-            // Custom easing: fast to 76%, slow 76→95%, crawl 95→100%
+            // Counter: 000 → 100 over 4500ms via rAF
+            // Custom easing: fast to 75, dramatic slowdown 75→90, then speed up 90→100
             const startTime = performance.now();
-            const duration = 2700;
+            const duration = 4500;
             let completed = false;
 
             function easeProgress(t) {
                 // t = linear 0→1, returns eased 0→100
-                if (t <= 0.55) {
-                    // 0–55% of time → 0–76% progress (fast)
-                    return (t / 0.55) * 76;
-                } else if (t <= 0.85) {
-                    // 55–85% of time → 76–95% progress (slow)
-                    return 76 + ((t - 0.55) / 0.30) * 19;
+                if (t <= 0.35) {
+                    // 0–35% of time (~1.6s) → 0–75% progress (fast)
+                    return (t / 0.35) * 75;
+                } else if (t <= 0.82) {
+                    // 35–82% of time (~2.1s) → 75–90% progress (very slow crawl)
+                    return 75 + ((t - 0.35) / 0.47) * 15;
                 } else {
-                    // 85–100% of time → 95–100% progress (crawl)
-                    return 95 + ((t - 0.85) / 0.15) * 5;
+                    // 82–100% of time (~0.8s) → 90–100% progress (speed back up)
+                    return 90 + ((t - 0.82) / 0.18) * 10;
                 }
             }
 
