@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -9,9 +9,96 @@
         content="Engineering intelligent digital products that scale. From robust data systems to high-performance applications.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet">
     <style>
+        /* ── PRELOADER ── */
+        .font-display { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; }
+
+        #preloader {
+            position: fixed; inset: 0; z-index: 9999;
+            background: #0a0a0a;
+            opacity: 1;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #preloader.fade-out { opacity: 0; pointer-events: none; }
+
+        /* Element 1: Portfolio label */
+        .preloader-label {
+            position: absolute; top: 2rem; left: 2rem;
+            font-size: 0.75rem; color: #888888; text-transform: uppercase;
+            letter-spacing: 0.3em;
+            opacity: 0; transform: translateY(-20px);
+            animation: preloaderSlideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+        }
+
+        /* Element 2: Rotating words */
+        .preloader-words {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .preloader-word {
+            position: absolute;
+            font-size: clamp(2.25rem, 6vw, 4.5rem);
+            color: rgba(245, 245, 245, 0.8);
+            opacity: 0; transform: translateY(20px);
+            animation: preloaderWordIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .preloader-word.exit {
+            animation: preloaderWordOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        /* Element 3: Counter */
+        .preloader-counter {
+            position: absolute; bottom: 2rem; right: 2rem;
+            font-size: clamp(3.75rem, 10vw, 8rem);
+            color: #f5f5f5;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            opacity: 0; transform: translateY(20px);
+            animation: preloaderSlideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+        }
+
+        /* Element 4: Progress bar */
+        .preloader-track {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 3px; background: rgba(31, 31, 31, 0.5);
+        }
+        .preloader-fill {
+            height: 100%; width: 100%;
+            transform-origin: left;
+            transform: scaleX(0);
+            background: linear-gradient(90deg, #89AACC 0%, #4E85BF 100%);
+            box-shadow: 0 0 8px rgba(137, 170, 204, 0.35);
+            transition: transform 0.1s linear;
+        }
+
+        /* Keyframes */
+        @keyframes preloaderSlideDown {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes preloaderSlideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes preloaderWordIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes preloaderWordOut {
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Main content hidden until preloader done */
+        #main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+        #main-content.visible { opacity: 1; }
+
+        /* Responsive preloader */
+        @media (min-width: 768px) {
+            .preloader-label { top: 3rem; left: 3rem; font-size: 0.875rem; }
+            .preloader-counter { bottom: 3rem; right: 3rem; }
+        }
         @font-face {
             font-family: 'Deltha';
             src: url('Deltha.otf') format('opentype'), url('Deltha.ttf') format('truetype');
@@ -1036,6 +1123,18 @@
 
 <body>
 
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="preloader-label">CODENEETI</div>
+        <div class="preloader-words" id="preloader-words"></div>
+        <div class="preloader-counter font-display" id="preloader-counter">000</div>
+        <div class="preloader-track">
+            <div class="preloader-fill" id="preloader-fill"></div>
+        </div>
+    </div>
+
+    <div id="main-content">
+
     <!-- NAVBAR -->
     <nav id="main-nav">
         <a href="#" class="nav-brand">
@@ -1345,6 +1444,73 @@
             <span>Built with precision.</span>
         </div>
     </footer>
+
+    </div><!-- end #main-content -->
+
+    <script>
+        // ── PRELOADER LOGIC ──
+        (function() {
+            const words = ['Design', 'Create', 'Inspire'];
+            const wordsContainer = document.getElementById('preloader-words');
+            const counterEl = document.getElementById('preloader-counter');
+            const fillEl = document.getElementById('preloader-fill');
+            const preloader = document.getElementById('preloader');
+            const mainContent = document.getElementById('main-content');
+            let wordIndex = 0;
+            let currentWordEl = null;
+
+            function showWord(index) {
+                if (currentWordEl) {
+                    currentWordEl.classList.add('exit');
+                    const old = currentWordEl;
+                    setTimeout(() => old.remove(), 400);
+                }
+                const span = document.createElement('span');
+                span.className = 'preloader-word font-display';
+                span.textContent = words[index];
+                wordsContainer.appendChild(span);
+                currentWordEl = span;
+            }
+
+            // Show first word immediately
+            showWord(0);
+
+            // Cycle words every 900ms, stop at last
+            const wordInterval = setInterval(() => {
+                wordIndex++;
+                if (wordIndex >= words.length) { clearInterval(wordInterval); return; }
+                showWord(wordIndex);
+            }, 900);
+
+            // Counter: 000 → 100 over 2700ms via rAF
+            const startTime = performance.now();
+            const duration = 2700;
+            let completed = false;
+
+            function tick(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1) * 100;
+                counterEl.textContent = Math.round(progress).toString().padStart(3, '0');
+                fillEl.style.transform = 'scaleX(' + (progress / 100) + ')';
+
+                if (progress < 100) {
+                    requestAnimationFrame(tick);
+                } else if (!completed) {
+                    completed = true;
+                    // Wait 400ms then fade out
+                    setTimeout(() => {
+                        preloader.classList.add('fade-out');
+                        // After fade-out (600ms), show main content
+                        setTimeout(() => {
+                            preloader.style.display = 'none';
+                            mainContent.classList.add('visible');
+                        }, 600);
+                    }, 400);
+                }
+            }
+            requestAnimationFrame(tick);
+        })();
+    </script>
 
     <script>
         // NAV SCROLL
