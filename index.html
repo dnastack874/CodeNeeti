@@ -1264,7 +1264,7 @@
                                     stroke-linecap="round" />
                             </svg></div>
                     </div>
-                    <div class="project-card premium reveal" onclick="window.open('https://studyflow-73q0.onrender.com/', '_blank')" style="cursor: pointer;">
+                    <div class="project-card premium reveal" onclick="window.open('flowsy.online', '_blank')" style="cursor: pointer;">
                         <div class="project-tag premium-tag">Premium Project</div>
                         <h3 class="project-name">StudyFlow - Personal Planner</h3>
                         <p class="project-desc">StudyFlow is a student productivity app for managing tasks, planning time slots, and staying focused. It includes a focus timer, progress tracking, and a clean interface to build discipline.</p>
@@ -1483,13 +1483,29 @@
             }, 900);
 
             // Counter: 000 → 100 over 2700ms via rAF
+            // Custom easing: fast to 76%, slow 76→95%, crawl 95→100%
             const startTime = performance.now();
             const duration = 2700;
             let completed = false;
 
+            function easeProgress(t) {
+                // t = linear 0→1, returns eased 0→100
+                if (t <= 0.55) {
+                    // 0–55% of time → 0–76% progress (fast)
+                    return (t / 0.55) * 76;
+                } else if (t <= 0.85) {
+                    // 55–85% of time → 76–95% progress (slow)
+                    return 76 + ((t - 0.55) / 0.30) * 19;
+                } else {
+                    // 85–100% of time → 95–100% progress (crawl)
+                    return 95 + ((t - 0.85) / 0.15) * 5;
+                }
+            }
+
             function tick(now) {
                 const elapsed = now - startTime;
-                const progress = Math.min(elapsed / duration, 1) * 100;
+                const t = Math.min(elapsed / duration, 1);
+                const progress = easeProgress(t);
                 counterEl.textContent = Math.round(progress).toString().padStart(3, '0');
                 fillEl.style.transform = 'scaleX(' + (progress / 100) + ')';
 
