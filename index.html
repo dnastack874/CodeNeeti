@@ -1,131 +1,46 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
     <title>Code — Engineering Intelligent Digital Products</title>
     <meta name="description"
         content="Engineering intelligent digital products that scale. From robust data systems to high-performance applications.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+    <link href="https://fon ts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet">
     <style>
-        /* ── PRELOADER ── */
-        .font-display { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; }
-
+        /* ── VIDEO PRELOADER ── */
         #preloader {
             position: fixed; inset: 0; z-index: 9999;
-            background: #0a0a0a;
+            background: #000;
+            display: flex; align-items: center; justify-content: center;
             opacity: 1;
             transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
         }
         #preloader.fade-out { opacity: 0; pointer-events: none; }
 
-        /* Warm radial glow behind center */
-        .preloader-glow {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px; height: 350px;
-            background: radial-gradient(ellipse, rgba(200, 168, 96, 0.18) 0%, rgba(200, 168, 96, 0.06) 40%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            filter: blur(20px);
+        #preloader-video {
+            width: 100%; height: 100%;
+            object-fit: cover;
         }
 
-        /* Element 1: Brand label */
-        .preloader-label {
-            position: absolute; top: 2rem; left: 2rem;
-            font-size: 0.7rem; color: rgba(200, 180, 130, 0.5); text-transform: uppercase;
-            letter-spacing: 0.35em;
-            opacity: 0; transform: translateY(-20px);
-            animation: preloaderSlideDown 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
-        }
-
-        /* Element 2: Rotating words */
-        .preloader-words {
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .preloader-word {
-            position: absolute;
-            font-size: clamp(2.5rem, 7vw, 5rem);
-            color: #c8a860;
-            text-shadow: 0 0 40px rgba(200, 168, 96, 0.4), 0 0 80px rgba(200, 168, 96, 0.15);
-            opacity: 0; transform: translateY(20px);
-            animation: preloaderWordIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-        .preloader-word.exit {
-            animation: preloaderWordOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        /* Element 3: Counter */
-        .preloader-counter-wrap {
-            position: absolute; bottom: 2rem; right: 2rem;
-            display: flex; align-items: flex-end; gap: 0.4rem;
-            opacity: 0; transform: translateY(20px);
-            animation: preloaderSlideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
-        }
-        .preloader-counter {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            color: rgba(245, 245, 245, 0.85);
-            font-variant-numeric: tabular-nums;
-            line-height: 1;
-        }
-        .preloader-sparkle {
-            width: 18px; height: 18px;
-            margin-bottom: 0.3rem;
-            color: rgba(245, 245, 245, 0.6);
-            animation: sparklePulse 1.5s ease-in-out infinite;
-        }
-
-        /* Element 4: Progress bar */
-        .preloader-track {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            height: 3px; background: rgba(31, 31, 31, 0.5);
-        }
-        .preloader-fill {
-            height: 100%; width: 100%;
-            transform-origin: left;
-            transform: scaleX(0);
-            background: linear-gradient(90deg, #a08040 0%, #d4b978 50%, #c8a860 100%);
-            box-shadow: 0 0 10px rgba(200, 168, 96, 0.4);
-            transition: transform 0.1s linear;
-        }
-
-        /* Keyframes */
-        @keyframes preloaderSlideDown {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes preloaderSlideUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes preloaderWordIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes preloaderWordOut {
-            to { opacity: 0; transform: translateY(-20px); }
-        }
-        @keyframes sparklePulse {
-            0%, 100% { opacity: 0.5; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.1); }
+        /* On portrait/mobile screens, contain the video so it's fully visible */
+        @media (max-width: 768px), (orientation: portrait) {
+            #preloader-video {
+                object-fit: contain;
+            }
         }
 
         /* Main content hidden until preloader done */
         #main-content {
             opacity: 0;
-            transition: opacity 0.5s ease-out;
+            transition: opacity 0.7s ease-out;
         }
         #main-content.visible { opacity: 1; }
-
-        /* Responsive preloader */
-        @media (min-width: 768px) {
-            .preloader-label { top: 3rem; left: 3rem; font-size: 0.8rem; }
-            .preloader-counter-wrap { bottom: 3rem; right: 3rem; }
-        }
         @font-face {
             font-family: 'Deltha';
             src: url('Deltha.otf') format('opentype'), url('Deltha.ttf') format('truetype');
@@ -1150,17 +1065,11 @@
 
 <body>
 
-    <!-- PRELOADER -->
+    <!-- VIDEO PRELOADER -->
     <div id="preloader">
-        <div class="preloader-glow"></div>
-        <div class="preloader-label">CODENEETI</div>
-        <div class="preloader-words" id="preloader-words"></div>
-        <div class="preloader-counter-wrap">
-            <span class="preloader-counter font-display" id="preloader-counter">000</span>
-        </div>
-        <div class="preloader-track">
-            <div class="preloader-fill" id="preloader-fill"></div>
-        </div>
+        <video id="preloader-video" autoplay muted playsinline>
+            <source src="preloader.mp4" type="video/mp4">
+        </video>
     </div>
 
     <div id="main-content">
@@ -1371,7 +1280,7 @@
                 <div class="reviews-grid">
                     <div class="review-card reveal">
                         <div class="review-card-top">
-                            <img src="r1.png" alt="Rohan Verma" class="review-avatar">
+                            <img src="dp.png" alt="Rohan Verma" class="review-avatar">
                             <div class="review-author">
                                 <h4>Rohan Verma</h4>
                                 <div class="review-stars">★★★</div>
@@ -1383,7 +1292,7 @@
                     </div>
                     <div class="review-card reveal">
                         <div class="review-card-top">
-                            <img src="r2.png" alt="Priya Sharma" class="review-avatar">
+                            <img src="dp.png" alt="Priya Sharma" class="review-avatar">
                             <div class="review-author">
                                 <h4>Priya Sharma</h4>
                                 <div class="review-stars">★★★★</div>
@@ -1396,7 +1305,7 @@
                     </div>
                     <div class="review-card reveal">
                         <div class="review-card-top">
-                            <img src="r3.png" alt="Aditya Desai" class="review-avatar">
+                            <img src="dp.png" alt="Aditya Desai" class="review-avatar">
                             <div class="review-author">
                                 <h4>Aditya Desai</h4>
                                 <div class="review-stars">★★★★★</div>
@@ -1408,7 +1317,7 @@
                     </div>
                     <div class="review-card reveal">
                         <div class="review-card-top">
-                            <img src="r4.png" alt="Neha Kapoor" class="review-avatar">
+                            <img src="dp.png" alt="Neha Kapoor" class="review-avatar">
                             <div class="review-author">
                                 <h4>Neha Kapoor</h4>
                                 <div class="review-stars">★★★★★</div>
@@ -1478,83 +1387,35 @@
     </div><!-- end #main-content -->
 
     <script>
-        // ── PRELOADER LOGIC ──
+        // ── VIDEO PRELOADER LOGIC ──
         (function() {
-            const words = ['Design', 'Create', 'Inspire'];
-            const wordsContainer = document.getElementById('preloader-words');
-            const counterEl = document.getElementById('preloader-counter');
-            const fillEl = document.getElementById('preloader-fill');
+            const video = document.getElementById('preloader-video');
             const preloader = document.getElementById('preloader');
             const mainContent = document.getElementById('main-content');
-            let wordIndex = 0;
-            let currentWordEl = null;
 
-            function showWord(index) {
-                if (currentWordEl) {
-                    currentWordEl.classList.add('exit');
-                    const old = currentWordEl;
-                    setTimeout(() => old.remove(), 400);
-                }
-                const span = document.createElement('span');
-                span.className = 'preloader-word font-display';
-                span.textContent = words[index];
-                wordsContainer.appendChild(span);
-                currentWordEl = span;
+            video.addEventListener('ended', function() {
+                preloader.classList.add('fade-out');
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                    mainContent.classList.add('visible');
+                }, 600);
+            });
+
+            // Fallback: if video fails to load, skip preloader
+            video.addEventListener('error', function() {
+                preloader.style.display = 'none';
+                mainContent.classList.add('visible');
+            });
+
+            // Mobile autoplay fallback: some browsers block autoplay
+            var playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(function() {
+                    // Autoplay blocked — skip preloader
+                    preloader.style.display = 'none';
+                    mainContent.classList.add('visible');
+                });
             }
-
-            // Show first word immediately
-            showWord(0);
-
-            // Cycle words every 1300ms, stop at last
-            const wordInterval = setInterval(() => {
-                wordIndex++;
-                if (wordIndex >= words.length) { clearInterval(wordInterval); return; }
-                showWord(wordIndex);
-            }, 1300);
-
-            // Counter: 000 → 100 over 4500ms via rAF
-            // Custom easing: fast to 75, dramatic slowdown 75→90, then speed up 90→100
-            const startTime = performance.now();
-            const duration = 4500;
-            let completed = false;
-
-            function easeProgress(t) {
-                // t = linear 0→1, returns eased 0→100
-                if (t <= 0.35) {
-                    // 0–35% of time (~1.6s) → 0–75% progress (fast)
-                    return (t / 0.35) * 75;
-                } else if (t <= 0.82) {
-                    // 35–82% of time (~2.1s) → 75–90% progress (very slow crawl)
-                    return 75 + ((t - 0.35) / 0.47) * 15;
-                } else {
-                    // 82–100% of time (~0.8s) → 90–100% progress (speed back up)
-                    return 90 + ((t - 0.82) / 0.18) * 10;
-                }
-            }
-
-            function tick(now) {
-                const elapsed = now - startTime;
-                const t = Math.min(elapsed / duration, 1);
-                const progress = easeProgress(t);
-                counterEl.textContent = Math.round(progress).toString().padStart(3, '0');
-                fillEl.style.transform = 'scaleX(' + (progress / 100) + ')';
-
-                if (progress < 100) {
-                    requestAnimationFrame(tick);
-                } else if (!completed) {
-                    completed = true;
-                    // Wait 400ms then fade out
-                    setTimeout(() => {
-                        preloader.classList.add('fade-out');
-                        // After fade-out (600ms), show main content
-                        setTimeout(() => {
-                            preloader.style.display = 'none';
-                            mainContent.classList.add('visible');
-                        }, 600);
-                    }, 400);
-                }
-            }
-            requestAnimationFrame(tick);
         })();
     </script>
 
